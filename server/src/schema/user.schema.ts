@@ -6,7 +6,7 @@ import {
   queryMethod,
   index,
 } from '@typegoose/typegoose';
-import { AsQueryMethod } from '@typegoose/typegoose/lib/types';
+import { AsQueryMethod, Ref } from '@typegoose/typegoose/lib/types';
 import bcrypt from 'bcrypt';
 import { IsEmail, MaxLength, MinLength } from 'class-validator';
 import { Field, InputType, ObjectType } from 'type-graphql';
@@ -70,8 +70,8 @@ export class User {
   @prop({ required: true })
   password: string;
 
-  // @prop({ type: () => [Post] })
-  // public posts?: Post[];
+  // @prop({ ref: () => Post })
+  // public posts?: Ref<Post>[];
 }
 
 export const UserModel = getModelForClass<typeof User, QueryHelpers>(User);

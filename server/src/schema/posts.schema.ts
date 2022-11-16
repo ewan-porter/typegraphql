@@ -1,4 +1,12 @@
-import { prop, Ref, index, getModelForClass } from '@typegoose/typegoose';
+import {
+  prop,
+  Ref,
+  index,
+  getModelForClass,
+  ReturnModelType,
+  queryMethod,
+} from '@typegoose/typegoose';
+import { AsQueryMethod } from '@typegoose/typegoose/lib/types';
 import { Field, InputType, ObjectType } from 'type-graphql';
 import { User } from './user.schema';
 
