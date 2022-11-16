@@ -10,6 +10,7 @@ import { AsQueryMethod } from '@typegoose/typegoose/lib/types';
 import bcrypt from 'bcrypt';
 import { IsEmail, MaxLength, MinLength } from 'class-validator';
 import { Field, InputType, ObjectType } from 'type-graphql';
+import { Post } from './posts.schema';
 
 function findByEmail(
   this: ReturnModelType<typeof User, QueryHelpers>,
@@ -68,6 +69,9 @@ export class User {
 
   @prop({ required: true })
   password: string;
+
+  // @prop({ type: () => [Post] })
+  // public posts?: Post[];
 }
 
 export const UserModel = getModelForClass<typeof User, QueryHelpers>(User);
