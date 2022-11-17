@@ -10,6 +10,16 @@ import { AsQueryMethod } from '@typegoose/typegoose/lib/types';
 import { Field, InputType, ObjectType } from 'type-graphql';
 import { User } from './user.schema';
 
+function findByUser(
+  this: ReturnModelType<typeof User, QueryHelpers>,
+  username: User['username'],
+) {
+  return this.findOne({ username });
+}
+
+export interface QueryHelpers {
+  findByUser: AsQueryMethod<typeof findByUser>;
+}
 @ObjectType()
 @index({ title: 1 })
 export class Post {
@@ -24,12 +34,14 @@ export class Post {
   @prop({ required: true })
   desc: string;
 
+  @Field(() => Date)
+  @prop({ required: true })
+  createdAt: Date;
+
   @Field(() => String)
   @prop({ required: true, ref: () => User, type: () => String })
-  user: Ref<User, string>;
+  user?: Ref<User, string>;
 }
-
-export const PostModel = getModelForClass<typeof Post>(Post);
 
 @InputType()
 export class CreatePostInput {
@@ -38,4 +50,8 @@ export class CreatePostInput {
 
   @Field(() => String)
   desc: string;
+
+  @Field(() => Date)
+  @prop({ required: true })
+  createdAt = new Date();
 }

@@ -1,8 +1,9 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import PostsService from '../service/posts.service';
-import { Post, CreatePostInput, PostModel } from '../schema/posts.schema';
+import { Post, CreatePostInput } from '../schema/posts.schema';
 import { User } from '../schema/user.schema';
 import Context from '../types/context';
+import { PostModel } from '../schema/schemaProcess';
 
 @Resolver()
 export default class PostsResolver {
@@ -24,11 +25,14 @@ export default class PostsResolver {
   @Authorized()
   getMyPosts(@Ctx() context: Context) {
     const user = context.user!;
+
     return PostModel.find({ user: user?.username });
   }
 
-  @Query(() => Post)
-  getUsersPosts() {
-    return PostModel;
+  @Query(() => [Post])
+  async getUsersPosts(
+    @Arg('user', { nullable: true }) user?: string,
+  ): Promise<Post[]> {
+    return await PostModel.find({ user: user });
   }
 }

@@ -1,19 +1,16 @@
-import {
-  LoginInput,
-  CreateUserInput,
-  UserModel,
-} from './../schema/user.schema';
+import { UserModel, PostModel } from './../schema/schemaProcess';
+
+import { LoginInput, CreateUserInput, User } from './../schema/user.schema';
 import Context from '../types/context';
 import { ApolloError } from 'apollo-server';
 import bcrypt from 'bcrypt';
 import { signJwt } from '../utils/jwt';
+import { Root } from 'type-graphql';
 
 class UserService {
   async createUser(input: CreateUserInput) {
     const userEmail = await UserModel.find().findByEmail(input.email).lean();
-    const userName = await UserModel.find()
-      .findByUsername(input.username)
-      .lean();
+    const userName = await UserModel.find().findByUser(input.username).lean();
 
     if (userEmail) {
       throw new ApolloError('Email address already in use');

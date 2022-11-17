@@ -19,16 +19,16 @@ function findByEmail(
   return this.findOne({ email });
 }
 
-function findByUsername(
+function findByUser(
   this: ReturnModelType<typeof User, QueryHelpers>,
   username: User['username'],
 ) {
   return this.findOne({ username });
 }
 
-interface QueryHelpers {
+export interface QueryHelpers {
   findByEmail: AsQueryMethod<typeof findByEmail>;
-  findByUsername: AsQueryMethod<typeof findByUsername>;
+  findByUser: AsQueryMethod<typeof findByUser>;
 }
 
 @pre<User>('save', async function () {
@@ -45,7 +45,7 @@ interface QueryHelpers {
 })
 @index({ email: 1, username: 1 })
 @queryMethod(findByEmail)
-@queryMethod(findByUsername)
+@queryMethod(findByUser)
 @ObjectType()
 export class User {
   @Field(() => String)
@@ -70,11 +70,10 @@ export class User {
   @prop({ required: true })
   password: string;
 
-  // @prop({ ref: () => Post })
-  // public posts?: Ref<Post>[];
+  @Field(() => [Post])
+  @prop({ required: false, type: () => [String], ref: () => Post })
+  posts?: Ref<Post, string>[];
 }
-
-export const UserModel = getModelForClass<typeof User, QueryHelpers>(User);
 
 @InputType()
 export class CreateUserInput {
