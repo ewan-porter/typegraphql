@@ -7,14 +7,15 @@ import {
   Query,
   Resolver,
   Root,
+  Authorized,
 } from 'type-graphql';
 import UserService from '../service/user.service';
 import Context from '../types/context';
 import PostsService from '../service/posts.service';
 import { Post } from '../schema/posts.schema';
-import { UserModel, PostModel } from '../schema/schemaProcess';
+import { PostModel } from '../schema/schemaProcess';
 
-@Resolver((of) => User)
+@Resolver(() => User)
 export default class UserResolver {
   constructor(
     private userService: UserService,
@@ -33,12 +34,18 @@ export default class UserResolver {
     return this.userService.login(input, context);
   }
 
+  @Mutation(() => String)
+  @Authorized()
+  logout(@Ctx() context: Context) {
+    return this.userService.logout(context);
+  }
+
   @Query(() => User)
   me(@Ctx() context: Context) {
     return context.user;
   }
 
-  @FieldResolver((of) => [Post])
+  @FieldResolver(() => [Post])
   async posts(@Root() user: User): Promise<Post[]> {
     const username = user.username;
     const userPosts = await PostModel.find({ user: username });

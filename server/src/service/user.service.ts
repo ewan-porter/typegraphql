@@ -56,6 +56,11 @@ class UserService {
     //return jwt
     return token;
   }
+
+  async logout(context: Context) {
+    context.res.clearCookie('accessToken');
+    return true;
+  }
 }
 
 export default UserService;
