@@ -108,3 +108,12 @@ export class LoginInput {
   @Field(() => String)
   password: string;
 }
+
+@InputType()
+export class ChangePasswordInput {
+  @Field(() => String)
+  password: string;
+
+  @Field(() => String)
+  newPassword: string;
+}

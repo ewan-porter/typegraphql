@@ -1,11 +1,15 @@
 import { UserModel, PostModel } from './../schema/schemaProcess';
 
-import { LoginInput, CreateUserInput, User } from './../schema/user.schema';
+import {
+  LoginInput,
+  CreateUserInput,
+  User,
+  ChangePasswordInput,
+} from './../schema/user.schema';
 import Context from '../types/context';
 import { ApolloError } from 'apollo-server';
 import bcrypt from 'bcrypt';
 import { signJwt } from '../utils/jwt';
-import { Root } from 'type-graphql';
 
 class UserService {
   async createUser(input: CreateUserInput) {
@@ -60,6 +64,54 @@ class UserService {
   async logout(context: Context) {
     context.res.clearCookie('accessToken');
     return true;
+  }
+
+  async changePassword(input: ChangePasswordInput, context: Context) {
+    const e = 'Incorrect password';
+
+    const passwordIsValid = await bcrypt.compare(
+      input.password,
+      context.user!.password,
+    );
+
+    if (!passwordIsValid) {
+      throw new ApolloError(e);
+    }
+
+    if (!context.user) {
+      throw new ApolloError(e);
+    }
+
+    const salt = await bcrypt.genSalt(10);
+
+    const hash = bcrypt.hashSync(input.newPassword, salt);
+
+    const user = await UserModel.findByIdAndUpdate(
+      context.user._id,
+      {
+        $set: { password: hash },
+      },
+      { new: true },
+    ).lean();
+
+    if (!user) {
+      throw new ApolloError(e);
+    }
+    const token = signJwt(user);
+
+    context.res.clearCookie('accessToken');
+    // set cookie for jwt
+    context.res.cookie('accessToken', token, {
+      maxAge: 3.154e10, // 1 year
+      httpOnly: true,
+      domain: 'localhost',
+      path: '/',
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+    });
+
+    // return jwt
+    return token;
   }
 }
 

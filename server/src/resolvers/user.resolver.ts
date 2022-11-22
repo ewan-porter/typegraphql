@@ -1,4 +1,9 @@
-import { CreateUserInput, LoginInput, User } from './../schema/user.schema';
+import {
+  ChangePasswordInput,
+  CreateUserInput,
+  LoginInput,
+  User,
+} from './../schema/user.schema';
 import {
   Arg,
   Ctx,
@@ -38,6 +43,15 @@ export default class UserResolver {
   @Authorized()
   logout(@Ctx() context: Context) {
     return this.userService.logout(context);
+  }
+
+  @Mutation(() => String)
+  @Authorized()
+  changePassword(
+    @Arg('input') input: ChangePasswordInput,
+    @Ctx() context: Context,
+  ) {
+    return this.userService.changePassword(input, context);
   }
 
   @Query(() => User)
