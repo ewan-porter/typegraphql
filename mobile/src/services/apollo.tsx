@@ -1,14 +1,18 @@
-import {ApolloClient} from 'apollo-client';
-import {ApolloProvider} from '@apollo/react-hooks';
-import {InMemoryCache} from 'apollo-cache-inmemory';
-import {HttpLink} from 'apollo-link-http';
-import {ApolloLink, Observable, Operation} from 'apollo-link';
-import {split} from 'apollo-link';
+import {
+  ApolloClient,
+  createHttpLink,
+  InMemoryCache,
+  ApolloLink,
+  Observable,
+  Operation,
+} from '@apollo/client';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Subscription} from 'zen-observable-ts';
 
-const BASE_URL = 'http://localhost:4000';
+const BASE_URL = 'http://localhost:4000/graphql';
 
-const httpLink = new HttpLink({
+export const link = createHttpLink({
   uri: BASE_URL,
   credentials: 'include',
 });
@@ -25,7 +29,7 @@ const request = async (operation: Operation) => {
 const requestLink = new ApolloLink(
   (operation, forward) =>
     new Observable(observer => {
-      let handle;
+      let handle: Subscription;
       Promise.resolve(operation)
         .then(oper => request(oper))
         .then(() => {
@@ -44,6 +48,6 @@ const requestLink = new ApolloLink(
 );
 
 export const client = new ApolloClient({
-  link: ApolloLink.from([requestLink, httpLink]),
+  link: ApolloLink.from([requestLink, link]),
   cache: new InMemoryCache(),
 });

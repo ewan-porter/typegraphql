@@ -13,22 +13,23 @@ import {StyleSheet, View} from 'react-native';
 import {AppNavigator} from './AppNavigator';
 import {ApolloProvider} from '@apollo/react-hooks';
 import {client} from './services/apollo';
-
-const BASE_URL = 'http://localhost:4000';
+import {NativeBaseProvider, stylingProps} from 'native-base';
 
 export const App: React.FC = () => {
   return (
-    <View style={styles.container}>
-      <ApolloProvider client={client}>
-        <AppNavigator />
-      </ApolloProvider>
-    </View>
+    <NativeBaseProvider>
+      <View style={styles.container}>
+        <ApolloProvider client={client}>
+          <AppNavigator />
+        </ApolloProvider>
+      </View>
+    </NativeBaseProvider>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'teal',
+    backgroundColor: '#e7e5e4',
   },
 });

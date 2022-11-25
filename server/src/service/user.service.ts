@@ -28,7 +28,8 @@ class UserService {
   }
 
   async login(input: LoginInput, context: Context) {
-    const e = 'Invalid email or password';
+    const e = 'Invalid emaildfadfqq or password';
+    const d = 'Invalid emaildfadfqq or password';
 
     // Get our user by email
     const user = await UserModel.find().findByEmail(input.email).lean();
@@ -41,8 +42,9 @@ class UserService {
     const passwordIsValid = await bcrypt.compare(input.password, user.password);
 
     if (!passwordIsValid) {
-      throw new ApolloError(e);
+      throw new ApolloError(d);
     }
+
     // sign a jwt
 
     const token = signJwt(user);

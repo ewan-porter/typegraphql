@@ -35,4 +35,9 @@ export default class PostsResolver {
   ): Promise<Post[]> {
     return await PostModel.find({ user: user });
   }
+
+  @Query(() => [Post])
+  async getAllPosts(): Promise<Post[]> {
+    return await PostModel.find();
+  }
 }
