@@ -3,14 +3,44 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/HomeScreen';
 import LogIn from '../screens/LogIn';
-import {Box} from 'native-base';
+import Register from '../screens/Register';
 import {useTheme} from 'native-base';
-import Animated, {FadeInUp, FadeOutDown} from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {LogInStackParamList} from '../types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Stack = createStackNavigator();
+const isSignedIn = AsyncStorage.getItem('token');
+
+const Stack = createStackNavigator<LogInStackParamList>();
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
+
+const AccountStack: React.FC = () => {
+  const {colors} = useTheme();
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: colors.warmGray[100],
+        },
+        headerTitleStyle: {
+          color: colors.teal[400],
+        },
+        headerBackTitleStyle: {
+          color: colors.teal[400],
+        },
+        headerTintColor: colors.teal[400],
+      }}>
+      <Stack.Screen
+        name="LogIn"
+        component={LogIn}
+        initialParams={{name: 'LogIn', register: false}}
+        options={{title: 'Log In'}}
+      />
+      <Stack.Screen name="Register" component={Register} />
+    </Stack.Navigator>
+  );
+};
 
 const BottomTabNavigator: React.FC = () => {
   const {colors} = useTheme();
@@ -46,13 +76,14 @@ const BottomTabNavigator: React.FC = () => {
         />
 
         <BottomTab.Screen
-          name="Login"
-          component={LogIn}
+          name="Account"
+          component={AccountStack}
           options={{
-            title: 'Log In',
             tabBarIcon: ({color, size}) => (
               <Icon name="login" color={color} size={size} />
             ),
+
+            headerShown: false,
           }}
         />
       </BottomTab.Group>

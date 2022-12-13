@@ -20,7 +20,6 @@ const PostCard: React.FC<Props> = ({data}) => {
       <Box
         flex={1}
         justifyContent="center"
-        // alignItems="center"
         bg={colors.white}
         _text={{
           color: colors.darkText,

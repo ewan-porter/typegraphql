@@ -1,10 +1,8 @@
-import {View, StyleSheet} from 'react-native';
 import React from 'react';
-import {FlatList} from 'react-native-gesture-handler';
-import PostCard from '../components/posts/PostCard';
-import {GetAllPostsQuery, useGetAllPostsQuery} from '../gql/graphql';
+import {useGetAllPostsQuery} from '../gql/graphql';
 import Loader from '../components/Loader';
 import PostList from '../components/posts/PostList';
+import {Text} from 'native-base';
 
 const HomeScreen: React.FC = () => {
   const {loading, error, data} = useGetAllPostsQuery();
@@ -12,8 +10,11 @@ const HomeScreen: React.FC = () => {
   if (loading) {
     return <Loader />;
   }
-  if (error || !data) {
-    return <Loader />;
+  if (error) {
+    return <Text>{error.message}</Text>;
+  }
+  if (!data) {
+    return <Text>THere are no posts :\(</Text>;
   }
   return <PostList data={data} />;
 };
