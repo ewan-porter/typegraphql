@@ -10,11 +10,12 @@ import {
 } from 'native-base';
 import React, {useState} from 'react';
 import Loader from '../components/Loader';
-import {useCreateUserMutation} from '../gql/graphql';
+import {useCreateUserMutation, useLoginMutation} from '../gql/graphql';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import UserInput from '../components/account/UserInput';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {LogInStackParamList} from '../types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type RegisterScreenNavProp = StackNavigationProp<LogInStackParamList>;
 
@@ -33,7 +34,14 @@ const Register = ({navigation}: Props) => {
 
   const [createUser, {data, loading, error}] = useCreateUserMutation({
     async onCompleted() {
-      navigation.navigate('LogIn', {name: 'Login', register: true});
+      const token = data?.createUser;
+      try {
+        await AsyncStorage.setItem('token', token!);
+        console.log(token);
+      } catch (err: any) {
+        console.log(err.message);
+        throw err;
+      }
     },
     async onError(err) {
       console.log('here', err);
@@ -56,33 +64,39 @@ const Register = ({navigation}: Props) => {
           <VStack space={4}>
             <UserInput
               field={'username'}
+              title={'Username'}
               handleChange={handleChange}
               value={values.username}
               icon={'account-circle'}
             />
             <UserInput
               field={'email'}
+              title={'Email'}
               handleChange={handleChange}
               value={values.email}
               icon={'at'}
             />
             <UserInput
               field={'fname'}
+              title={'First name'}
               handleChange={handleChange}
               value={values.fname}
               icon={'account-question'}
             />
             <UserInput
               field={'lname'}
+              title={'Last name'}
               handleChange={handleChange}
               value={values.lname}
               icon={'account-question'}
             />
             <UserInput
               field={'password'}
+              title={'Password'}
               handleChange={handleChange}
               value={values.password}
               icon={'lock'}
+              password={true}
             />
 
             <Button colorScheme="teal" onPress={handleSubmit}>

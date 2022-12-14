@@ -8,7 +8,7 @@ export type PostType = {
 };
 
 export type LogInStackParamList = {
-  LogIn: {name: string; register: boolean} | undefined;
+  LogIn: {name: string} | undefined;
   Register: {name: string} | undefined;
 };
 

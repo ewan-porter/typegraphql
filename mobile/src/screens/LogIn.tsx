@@ -16,6 +16,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {LogInStackParamList} from '../types';
 import Loader from '../components/Loader';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import UserInput from '../components/account/UserInput';
 
 type Props = NativeStackScreenProps<LogInStackParamList, 'LogIn'>;
 
@@ -55,50 +56,22 @@ const LogIn = ({route, navigation}: Props) => {
       ) : (
         <Box safeArea p="2" py="8" w="75%">
           <VStack space={4}>
-            <FormControl>
-              <Input
-                size="lg"
-                color="darkText"
-                onChangeText={text => handleChange('email', text)}
-                value={values.email}
-                placeholder={'Email'}
-                autoCorrect={false}
-                autoCapitalize="none"
-                focusOutlineColor="teal.400"
-                InputLeftElement={
-                  <Icon
-                    name="account-circle"
-                    size={24}
-                    style={{
-                      paddingLeft: 5,
-                    }}
-                  />
-                }
-              />
-            </FormControl>
+            <UserInput
+              field={'email'}
+              title={'Email'}
+              handleChange={handleChange}
+              value={values.email}
+              icon={'account-circle'}
+            />
 
-            <FormControl>
-              <Input
-                size="lg"
-                color="darkText"
-                onChangeText={text => handleChange('password', text)}
-                value={values.password}
-                placeholder={'Password'}
-                autoCorrect={false}
-                autoCapitalize="none"
-                InputLeftElement={
-                  <Icon
-                    name="lock"
-                    size={24}
-                    style={{
-                      paddingLeft: 5,
-                    }}
-                  />
-                }
-                isRequired
-                focusOutlineColor="teal.400"
-              />
-            </FormControl>
+            <UserInput
+              field={'password'}
+              title={'Password'}
+              handleChange={handleChange}
+              value={values.password}
+              icon={'lock'}
+              password={true}
+            />
             <Button colorScheme="teal" onPress={handleSubmit}>
               Log In
             </Button>
@@ -110,23 +83,17 @@ const LogIn = ({route, navigation}: Props) => {
               </Text>
             )}
 
-            {!route.params?.register ? (
-              <Text textAlign="center" color="darkText">
-                Not registered?{' '}
-                <Link
-                  justifyContent="center"
-                  onPress={() => navigation.navigate('Register')}
-                  _text={{
-                    color: 'teal.400',
-                  }}>
-                  Sign Up
-                </Link>{' '}
-              </Text>
-            ) : (
-              <Text textAlign="center" color="darkText">
-                Registration successful, please sign in.
-              </Text>
-            )}
+            <Text textAlign="center" color="darkText">
+              Not registered?{' '}
+              <Link
+                justifyContent="center"
+                onPress={() => navigation.navigate('Register')}
+                _text={{
+                  color: 'teal.400',
+                }}>
+                Sign Up
+              </Link>{' '}
+            </Text>
           </Box>
         </Box>
       )}

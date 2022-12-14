@@ -7,10 +7,11 @@ type Props = {
   handleChange: (fieldName: string, text: string) => void;
   value: string;
   icon: string;
+  title: string;
+  password?: boolean;
 };
 
-function UserInput({field, handleChange, value, icon}: Props) {
-  const capitalise = (s: string) => s && s[0].toUpperCase() + s.slice(1);
+function UserInput({field, handleChange, value, icon, title, password}: Props) {
   return (
     <FormControl>
       <Input
@@ -18,10 +19,11 @@ function UserInput({field, handleChange, value, icon}: Props) {
         color="darkText"
         onChangeText={text => handleChange(field, text)}
         value={value}
-        placeholder={capitalise(field)}
+        placeholder={title}
         autoCorrect={false}
         autoCapitalize="none"
         focusOutlineColor="teal.400"
+        type={password ? 'password' : 'text'}
         InputLeftElement={
           <Icon
             name={icon}

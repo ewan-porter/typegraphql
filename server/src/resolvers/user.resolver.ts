@@ -30,8 +30,8 @@ export default class UserResolver {
   }
 
   @Mutation(() => User)
-  createUser(@Arg('input') input: CreateUserInput) {
-    return this.userService.createUser(input);
+  createUser(@Arg('input') input: CreateUserInput, @Ctx() context: Context) {
+    return this.userService.createUser(input, context);
   }
 
   @Mutation(() => String) //return JWT

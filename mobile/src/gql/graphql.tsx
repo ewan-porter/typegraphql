@@ -44,7 +44,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   changePassword: Scalars['String'];
   createPost: Post;
-  createUser: User;
+  createUser: Scalars['String'];
   login: Scalars['String'];
   logout: Scalars['String'];
 };
@@ -118,7 +118,7 @@ export type CreateUserMutationVariables = Exact<{
 }>;
 
 
-export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'User', email: string, username: string, _id: string, fname: string, lname: string } };
+export type CreateUserMutation = { __typename?: 'Mutation', createUser: string };
 
 
 export const GetAllPostsDocument = gql`
@@ -191,13 +191,7 @@ export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const CreateUserDocument = gql`
     mutation createUser($input: CreateUserInput!) {
-  createUser(input: $input) {
-    email
-    username
-    _id
-    fname
-    lname
-  }
+  createUser(input: $input)
 }
     `;
 export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;
