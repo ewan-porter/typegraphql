@@ -1,9 +1,7 @@
-import {Text} from 'native-base';
+import { Text } from 'native-base';
 import React from 'react';
 
-type Props = {};
-
-const Account = (props: Props) => {
+const Account = () => {
   return <Text>Account</Text>;
 };
 

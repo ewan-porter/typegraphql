@@ -1,5 +1,4 @@
-import {createStackNavigator} from '@react-navigation/stack';
-import {NavigationContainer} from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import BottomTabNavigator from './navigation/BottomTabNavigator';
 

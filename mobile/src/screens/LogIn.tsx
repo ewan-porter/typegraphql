@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
-import {useLoginMutation, UserResponse} from '../gql/graphql';
-import {VStack, Box, Flex, Button, Text, Link} from 'native-base';
-import {LogInStackParamList, RootTabParamList} from '../types';
+import React, { useState } from 'react';
+import { useLoginMutation, UserResponse } from '../gql/graphql';
+import { VStack, Box, Flex, Button, Text, Link } from 'native-base';
+import { LogInStackParamList, RootTabParamList } from '../types';
 import Loader from '../components/Loader';
 import UserInput from '../components/account/UserInput';
-import {useUserContext} from '../AppContext';
-import {CompositeScreenProps} from '@react-navigation/native';
-import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
-import {StackScreenProps} from '@react-navigation/stack';
+import { useUserContext } from '../AppContext';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { StackScreenProps } from '@react-navigation/stack';
 
 // type Props = NativeStackScreenProps<LogInStackParamList, 'LogIn'>;
 type LogInScreenProps = CompositeScreenProps<
@@ -15,14 +15,14 @@ type LogInScreenProps = CompositeScreenProps<
   StackScreenProps<LogInStackParamList>
 >;
 
-const LogIn = ({navigation}: LogInScreenProps) => {
-  const {signIn} = useUserContext();
+const LogIn = ({ navigation }: LogInScreenProps) => {
+  const { signIn } = useUserContext();
   const [values, setValues] = useState({
     email: '',
     password: '',
   });
 
-  const [logIn, {data, loading, error}] = useLoginMutation({
+  const [logIn, { data, loading, error }] = useLoginMutation({
     async onCompleted() {
       const user: UserResponse = data?.login as UserResponse;
       try {
@@ -39,11 +39,11 @@ const LogIn = ({navigation}: LogInScreenProps) => {
   });
 
   const handleChange = (fieldName: string, text: string) => {
-    setValues({...values, [fieldName]: text});
+    setValues({ ...values, [fieldName]: text });
   };
 
   const handleSubmit = () => {
-    logIn({variables: {input: values}});
+    logIn({ variables: { input: values } });
   };
   return (
     <Flex align="center" justify="center" h="100%">

@@ -1,6 +1,5 @@
-import {Flex, Spinner, Heading, Text} from 'native-base';
+import { Flex, Spinner } from 'native-base';
 import React from 'react';
-import {useTheme} from 'native-base';
 
 const Loader = () => {
   return (

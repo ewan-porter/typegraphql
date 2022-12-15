@@ -8,7 +8,7 @@ import {
 } from '@apollo/client';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Subscription} from 'zen-observable-ts';
+import { Subscription } from 'zen-observable-ts';
 
 const BASE_URL = 'http://localhost:4000/graphql';
 
@@ -42,7 +42,9 @@ const requestLink = new ApolloLink(
         .catch(observer.error.bind(observer));
 
       return () => {
-        if (handle) handle.unsubscribe();
+        if (handle) {
+          handle.unsubscribe();
+        }
       };
     }),
 );

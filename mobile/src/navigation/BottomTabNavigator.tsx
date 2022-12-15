@@ -1,22 +1,20 @@
-import React, {useEffect, useState} from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import React from 'react';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../screens/HomeScreen';
-import {useTheme} from 'native-base';
+import { useTheme } from 'native-base';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LogInStack from './LogInStack';
 import CreatePost from '../screens/CreatePost';
 import Account from '../screens/Account';
-import {RootTabParamList} from '../types';
-import {useUserContext} from '../AppContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { RootTabParamList } from '../types';
+import { useUserContext } from '../AppContext';
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 const INITIAL_ROUTE_NAME = 'Home';
 const BottomTabNavigator: React.FC = () => {
-  // AsyncStorage.removeItem('user');
-  const {user} = useUserContext();
-  const {colors} = useTheme();
-  const signedIn = user;
+  const { activeUser } = useUserContext();
+  const { colors } = useTheme();
+  const signedIn = activeUser;
 
   return (
     <BottomTab.Navigator
@@ -35,14 +33,14 @@ const BottomTabNavigator: React.FC = () => {
           },
           tabBarActiveTintColor: colors.teal[400],
           tabBarInactiveTintColor: colors.warmGray[700],
-          tabBarStyle: {backgroundColor: colors.warmGray[100]},
+          tabBarStyle: { backgroundColor: colors.warmGray[100] },
         }}>
         <BottomTab.Screen
           name="Home"
           component={HomeScreen}
           options={{
             title: 'Home',
-            tabBarIcon: ({color, size}) => (
+            tabBarIcon: ({ color, size }) => (
               <Icon name="home" color={color} size={size} />
             ),
           }}
@@ -53,7 +51,7 @@ const BottomTabNavigator: React.FC = () => {
               name="CreatePost"
               component={CreatePost}
               options={{
-                tabBarIcon: ({color, size}) => (
+                tabBarIcon: ({ color, size }) => (
                   <Icon name="login" color={color} size={size} />
                 ),
 
@@ -65,7 +63,7 @@ const BottomTabNavigator: React.FC = () => {
               name="Account"
               component={Account}
               options={{
-                tabBarIcon: ({color, size}) => (
+                tabBarIcon: ({ color, size }) => (
                   <Icon name="login" color={color} size={size} />
                 ),
 
@@ -79,7 +77,7 @@ const BottomTabNavigator: React.FC = () => {
             name="LogIn"
             component={LogInStack}
             options={{
-              tabBarIcon: ({color, size}) => (
+              tabBarIcon: ({ color, size }) => (
                 <Icon name="login" color={color} size={size} />
               ),
 

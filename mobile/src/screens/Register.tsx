@@ -1,36 +1,22 @@
-import {
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  Input,
-  Link,
-  Text,
-  VStack,
-} from 'native-base';
-import React, {useState} from 'react';
+import { Box, Button, Flex, Link, Text, VStack } from 'native-base';
+import React, { useState } from 'react';
 import Loader from '../components/Loader';
-import {
-  useCreateUserMutation,
-  useLoginMutation,
-  UserResponse,
-} from '../gql/graphql';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useCreateUserMutation, UserResponse } from '../gql/graphql';
 import UserInput from '../components/account/UserInput';
-import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
-import {LogInStackParamList, RootTabParamList} from '../types';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
-import {CompositeScreenProps} from '@react-navigation/native';
-import {useUserContext} from '../AppContext';
+import { StackScreenProps } from '@react-navigation/stack';
+import { LogInStackParamList, RootTabParamList } from '../types';
+
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { useUserContext } from '../AppContext';
 
 type RegisterScreenProps = CompositeScreenProps<
   BottomTabScreenProps<RootTabParamList, 'LogIn'>,
   StackScreenProps<LogInStackParamList>
 >;
 
-const Register = ({navigation}: RegisterScreenProps) => {
-  const {signIn} = useUserContext();
+const Register = ({ navigation }: RegisterScreenProps) => {
+  const { signIn } = useUserContext();
   const [values, setValues] = useState({
     email: '',
     username: '',
@@ -39,7 +25,7 @@ const Register = ({navigation}: RegisterScreenProps) => {
     password: '',
   });
 
-  const [createUser, {data, loading, error}] = useCreateUserMutation({
+  const [createUser, { data, loading, error }] = useCreateUserMutation({
     async onCompleted() {
       const user: UserResponse = data?.createUser as UserResponse;
 
@@ -57,11 +43,11 @@ const Register = ({navigation}: RegisterScreenProps) => {
   });
 
   const handleChange = (fieldName: string, text: string) => {
-    setValues({...values, [fieldName]: text});
+    setValues({ ...values, [fieldName]: text });
   };
 
   const handleSubmit = () => {
-    createUser({variables: {input: values}});
+    createUser({ variables: { input: values } });
   };
   return (
     <Flex align="center" justify="center" h="100%">

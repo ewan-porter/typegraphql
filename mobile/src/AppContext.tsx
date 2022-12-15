@@ -7,8 +7,7 @@ import React, {
   useMemo,
   useEffect,
 } from 'react';
-import {UserResponse} from './gql/graphql';
-// import {User} from './types';
+import { UserResponse } from './gql/graphql';
 
 type Props = {
   children: React.ReactNode;
@@ -17,46 +16,46 @@ type Props = {
 type Context = {
   signIn: (user: UserResponse) => void;
   signOut: () => void;
-  user: UserResponse | null;
+  activeUser: UserResponse | null;
 };
 
 const UserContext = createContext<Context>({
   signIn: () => {},
   signOut: () => {},
-  user: null,
+  activeUser: null,
 });
 
-const UserContextProvider = ({children}: Props): JSX.Element => {
-  const [user, setUser] = useState<UserResponse | null>(null);
+const UserContextProvider = ({ children }: Props): JSX.Element => {
+  const [activeUser, setActiveUser] = useState<UserResponse | null>(null);
 
   const signOut = useCallback(async () => {
     await AsyncStorage.removeItem('user');
-    setUser(null);
+    setActiveUser(null);
   }, []);
 
   const signIn = useCallback(async (user: UserResponse) => {
     await AsyncStorage.setItem('user', JSON.stringify(user));
-    setUser(user);
+    setActiveUser(user);
   }, []);
 
   useEffect(() => {
     const restoreUser = async () => {
-      const user = await AsyncStorage.getItem('user');
-      if (user) {
-        const decodedUser: UserResponse = JSON.parse(user);
-        setUser(decodedUser);
+      const loggedUser = await AsyncStorage.getItem('user');
+      if (loggedUser) {
+        const decodedUser: UserResponse = JSON.parse(loggedUser);
+        setActiveUser(decodedUser);
       }
     };
     restoreUser();
-  }, []);
+  }, [activeUser]);
 
   const contextValue = useMemo(
     () => ({
       signIn,
       signOut,
-      user,
+      activeUser,
     }),
-    [signIn, signOut, user],
+    [signIn, signOut, activeUser],
   );
 
   return (

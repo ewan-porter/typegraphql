@@ -1,7 +1,6 @@
-import {Box, Center} from 'native-base';
+import { Box, Center } from 'native-base';
 import React from 'react';
-import {useTheme} from 'native-base';
-import {GetAllPostsQuery, useGetAllPostsQuery} from '../../gql/graphql';
+import { useTheme } from 'native-base';
 
 interface Props {
   data: {
@@ -12,8 +11,8 @@ interface Props {
     desc: string;
   };
 }
-const PostCard: React.FC<Props> = ({data}) => {
-  const {colors} = useTheme();
+const PostCard: React.FC<Props> = ({ data }) => {
+  const { colors } = useTheme();
 
   return (
     <Center>
@@ -32,13 +31,13 @@ const PostCard: React.FC<Props> = ({data}) => {
           p={4}
           roundedTop="lg"
           bg="teal.400"
-          _text={{fontSize: 'xl', fontWeight: 'bold'}}>
+          _text={{ fontSize: 'xl', fontWeight: 'bold' }}>
           {data.title}
         </Box>
         <Box
           p={4}
           roundedBottom="lg"
-          _text={{fontSize: 'md', fontWeight: 'bold'}}>
+          _text={{ fontSize: 'md', fontWeight: 'bold' }}>
           {data.desc}
         </Box>
         <Box

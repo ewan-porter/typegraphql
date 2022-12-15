@@ -6,15 +6,15 @@ export type PostType = {
 };
 
 export type LogInStackParamList = {
-  LogIn: {name: string} | undefined;
-  Register: {name: string} | undefined;
+  LogIn: { name: string } | undefined;
+  Register: { name: string } | undefined;
 };
 
 export type RootTabParamList = {
   Home: undefined;
-  LogIn: {name: string} | undefined;
-  CreatePost: {name: string} | undefined;
-  Account: {name: string} | undefined;
+  LogIn: { name: string } | undefined;
+  CreatePost: { name: string } | undefined;
+  Account: { name: string } | undefined;
 };
 
 type userDetails = {

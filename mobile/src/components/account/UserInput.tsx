@@ -1,4 +1,4 @@
-import {FormControl, Input} from 'native-base';
+import { FormControl, Input } from 'native-base';
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -11,7 +11,14 @@ type Props = {
   password?: boolean;
 };
 
-function UserInput({field, handleChange, value, icon, title, password}: Props) {
+function UserInput({
+  field,
+  handleChange,
+  value,
+  icon,
+  title,
+  password,
+}: Props) {
   return (
     <FormControl>
       <Input
