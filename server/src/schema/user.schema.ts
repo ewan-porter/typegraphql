@@ -117,3 +117,12 @@ export class ChangePasswordInput {
   @Field(() => String)
   newPassword: string;
 }
+
+@ObjectType()
+export class UserResponse {
+  @Field(() => String, { nullable: true })
+  accessToken: string;
+
+  @Field(() => User, { nullable: true })
+  currentUser?: User;
+}

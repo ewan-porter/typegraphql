@@ -3,6 +3,7 @@ import {
   CreateUserInput,
   LoginInput,
   User,
+  UserResponse,
 } from './../schema/user.schema';
 import {
   Arg,
@@ -29,12 +30,12 @@ export default class UserResolver {
     this.userService = new UserService();
   }
 
-  @Mutation(() => User)
+  @Mutation(() => UserResponse)
   createUser(@Arg('input') input: CreateUserInput, @Ctx() context: Context) {
     return this.userService.createUser(input, context);
   }
 
-  @Mutation(() => String) //return JWT
+  @Mutation(() => UserResponse) //return JWT
   login(@Arg('input') input: LoginInput, @Ctx() context: Context) {
     return this.userService.login(input, context);
   }

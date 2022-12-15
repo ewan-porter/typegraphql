@@ -10,20 +10,27 @@ import {
 } from 'native-base';
 import React, {useState} from 'react';
 import Loader from '../components/Loader';
-import {useCreateUserMutation, useLoginMutation} from '../gql/graphql';
+import {
+  useCreateUserMutation,
+  useLoginMutation,
+  UserResponse,
+} from '../gql/graphql';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import UserInput from '../components/account/UserInput';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {LogInStackParamList} from '../types';
+import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
+import {LogInStackParamList, RootTabParamList} from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
+import {CompositeScreenProps} from '@react-navigation/native';
+import {useUserContext} from '../AppContext';
 
-type RegisterScreenNavProp = StackNavigationProp<LogInStackParamList>;
+type RegisterScreenProps = CompositeScreenProps<
+  BottomTabScreenProps<RootTabParamList, 'LogIn'>,
+  StackScreenProps<LogInStackParamList>
+>;
 
-type Props = {
-  navigation: RegisterScreenNavProp;
-};
-
-const Register = ({navigation}: Props) => {
+const Register = ({navigation}: RegisterScreenProps) => {
+  const {signIn} = useUserContext();
   const [values, setValues] = useState({
     email: '',
     username: '',
@@ -34,10 +41,11 @@ const Register = ({navigation}: Props) => {
 
   const [createUser, {data, loading, error}] = useCreateUserMutation({
     async onCompleted() {
-      const token = data?.createUser;
+      const user: UserResponse = data?.createUser as UserResponse;
+
       try {
-        await AsyncStorage.setItem('token', token!);
-        console.log(token);
+        signIn(user);
+        navigation.navigate('Home');
       } catch (err: any) {
         console.log(err.message);
         throw err;

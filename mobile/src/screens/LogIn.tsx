@@ -1,26 +1,22 @@
 import React, {useState} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useLoginMutation} from '../gql/graphql';
-import {
-  Center,
-  VStack,
-  Box,
-  FormControl,
-  Input,
-  Flex,
-  Button,
-  Text,
-  Link,
-} from 'native-base';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {LogInStackParamList} from '../types';
+import {useLoginMutation, UserResponse} from '../gql/graphql';
+import {VStack, Box, Flex, Button, Text, Link} from 'native-base';
+import {LogInStackParamList, RootTabParamList} from '../types';
 import Loader from '../components/Loader';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import UserInput from '../components/account/UserInput';
+import {useUserContext} from '../AppContext';
+import {CompositeScreenProps} from '@react-navigation/native';
+import {BottomTabScreenProps} from '@react-navigation/bottom-tabs';
+import {StackScreenProps} from '@react-navigation/stack';
 
-type Props = NativeStackScreenProps<LogInStackParamList, 'LogIn'>;
+// type Props = NativeStackScreenProps<LogInStackParamList, 'LogIn'>;
+type LogInScreenProps = CompositeScreenProps<
+  BottomTabScreenProps<RootTabParamList, 'LogIn'>,
+  StackScreenProps<LogInStackParamList>
+>;
 
-const LogIn = ({route, navigation}: Props) => {
+const LogIn = ({navigation}: LogInScreenProps) => {
+  const {signIn} = useUserContext();
   const [values, setValues] = useState({
     email: '',
     password: '',
@@ -28,10 +24,10 @@ const LogIn = ({route, navigation}: Props) => {
 
   const [logIn, {data, loading, error}] = useLoginMutation({
     async onCompleted() {
-      const token = data?.login;
+      const user: UserResponse = data?.login as UserResponse;
       try {
-        await AsyncStorage.setItem('token', token!);
-        console.log(token);
+        signIn(user);
+        navigation.navigate('Home');
       } catch (err: any) {
         console.log(err.message);
         throw err;

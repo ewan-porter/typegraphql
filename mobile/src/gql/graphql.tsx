@@ -44,8 +44,8 @@ export type Mutation = {
   __typename?: 'Mutation';
   changePassword: Scalars['String'];
   createPost: Post;
-  createUser: Scalars['String'];
-  login: Scalars['String'];
+  createUser: UserResponse;
+  login: UserResponse;
   logout: Scalars['String'];
 };
 
@@ -101,6 +101,12 @@ export type User = {
   username: Scalars['String'];
 };
 
+export type UserResponse = {
+  __typename?: 'UserResponse';
+  accessToken?: Maybe<Scalars['String']>;
+  currentUser?: Maybe<User>;
+};
+
 export type GetAllPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -111,14 +117,14 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: string };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'UserResponse', accessToken?: string | null, currentUser?: { __typename?: 'User', username: string, email: string, fname: string, lname: string } | null } };
 
 export type CreateUserMutationVariables = Exact<{
   input: CreateUserInput;
 }>;
 
 
-export type CreateUserMutation = { __typename?: 'Mutation', createUser: string };
+export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'UserResponse', accessToken?: string | null, currentUser?: { __typename?: 'User', username: string, email: string, fname: string, lname: string } | null } };
 
 
 export const GetAllPostsDocument = gql`
@@ -160,7 +166,15 @@ export type GetAllPostsLazyQueryHookResult = ReturnType<typeof useGetAllPostsLaz
 export type GetAllPostsQueryResult = Apollo.QueryResult<GetAllPostsQuery, GetAllPostsQueryVariables>;
 export const LoginDocument = gql`
     mutation login($input: LoginInput!) {
-  login(input: $input)
+  login(input: $input) {
+    accessToken
+    currentUser {
+      username
+      email
+      fname
+      lname
+    }
+  }
 }
     `;
 export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
@@ -191,7 +205,15 @@ export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const CreateUserDocument = gql`
     mutation createUser($input: CreateUserInput!) {
-  createUser(input: $input)
+  createUser(input: $input) {
+    accessToken
+    currentUser {
+      username
+      email
+      fname
+      lname
+    }
+  }
 }
     `;
 export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;

@@ -4,25 +4,20 @@ import HomeScreen from '../screens/HomeScreen';
 import {useTheme} from 'native-base';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LogInStack from './LogInStack';
-import getLoggedUser from '../utils/isSignedIn';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Register from '../screens/Register';
 import CreatePost from '../screens/CreatePost';
 import Account from '../screens/Account';
+import {RootTabParamList} from '../types';
+import {useUserContext} from '../AppContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const BottomTab = createBottomTabNavigator();
+const BottomTab = createBottomTabNavigator<RootTabParamList>();
 const INITIAL_ROUTE_NAME = 'Home';
-// AsyncStorage.removeItem('token');
 const BottomTabNavigator: React.FC = () => {
+  // AsyncStorage.removeItem('user');
+  const {user} = useUserContext();
   const {colors} = useTheme();
+  const signedIn = user;
 
-  const [signedIn, setSignedIn] = useState(false);
-
-  (async () => {
-    console.log(await getLoggedUser());
-
-    setSignedIn(await getLoggedUser());
-  })();
   return (
     <BottomTab.Navigator
       sceneContainerStyle={{
@@ -55,7 +50,7 @@ const BottomTabNavigator: React.FC = () => {
         {signedIn ? (
           <>
             <BottomTab.Screen
-              name="Create Post"
+              name="CreatePost"
               component={CreatePost}
               options={{
                 tabBarIcon: ({color, size}) => (
@@ -63,6 +58,7 @@ const BottomTabNavigator: React.FC = () => {
                 ),
 
                 headerShown: false,
+                title: 'Create Post',
               }}
             />
             <BottomTab.Screen
@@ -74,12 +70,13 @@ const BottomTabNavigator: React.FC = () => {
                 ),
 
                 headerShown: false,
+                title: 'Account',
               }}
             />
           </>
         ) : (
           <BottomTab.Screen
-            name="Log In"
+            name="LogIn"
             component={LogInStack}
             options={{
               tabBarIcon: ({color, size}) => (
@@ -87,6 +84,7 @@ const BottomTabNavigator: React.FC = () => {
               ),
 
               headerShown: false,
+              title: 'Log In',
             }}
           />
         )}

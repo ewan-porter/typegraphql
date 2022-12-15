@@ -12,7 +12,7 @@ import bcrypt from 'bcrypt';
 import { signJwt } from '../utils/jwt';
 
 class UserService {
-  async createUser(input: CreateUserInput) {
+  async createUser(input: CreateUserInput, context: Context) {
     const userEmail = await UserModel.find().findByEmail(input.email).lean();
     const userName = await UserModel.find().findByUser(input.username).lean();
 
@@ -24,7 +24,20 @@ class UserService {
       throw new ApolloError('Username already in use');
     }
 
-    return UserModel.create(input);
+    const user = UserModel.create(input);
+
+    const token = signJwt(user);
+
+    context.res.cookie('accessToken', token, {
+      maxAge: 3.154e10, // 1 year
+      httpOnly: true,
+      domain: 'localhost',
+      path: '/',
+      sameSite: 'strict',
+      secure: process.env.NODE_ENV === 'production',
+    });
+
+    return { accessToken: token, currentUser: user };
   }
 
   async login(input: LoginInput, context: Context) {
@@ -59,7 +72,7 @@ class UserService {
     });
 
     //return jwt
-    return token;
+    return { accessToken: token, currentUser: user };
   }
 
   async logout(context: Context) {
