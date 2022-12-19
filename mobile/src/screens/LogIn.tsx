@@ -9,7 +9,6 @@ import { CompositeScreenProps } from '@react-navigation/native';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { StackScreenProps } from '@react-navigation/stack';
 
-// type Props = NativeStackScreenProps<LogInStackParamList, 'LogIn'>;
 type LogInScreenProps = CompositeScreenProps<
   BottomTabScreenProps<RootTabParamList, 'LogIn'>,
   StackScreenProps<LogInStackParamList>

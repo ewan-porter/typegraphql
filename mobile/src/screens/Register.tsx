@@ -11,8 +11,8 @@ import { CompositeScreenProps } from '@react-navigation/native';
 import { useUserContext } from '../AppContext';
 
 type RegisterScreenProps = CompositeScreenProps<
-  BottomTabScreenProps<RootTabParamList, 'LogIn'>,
-  StackScreenProps<LogInStackParamList>
+  BottomTabScreenProps<RootTabParamList>,
+  StackScreenProps<LogInStackParamList, 'Register'>
 >;
 
 const Register = ({ navigation }: RegisterScreenProps) => {

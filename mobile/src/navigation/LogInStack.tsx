@@ -32,7 +32,11 @@ const LogInStack: React.FC = () => {
         component={LogIn}
         options={{ title: 'Log In' }}
       />
-      <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen
+        name="Register"
+        component={Register}
+        options={{ title: 'Register' }}
+      />
     </Stack.Navigator>
   );
 };

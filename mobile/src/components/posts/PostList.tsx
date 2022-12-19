@@ -1,13 +1,14 @@
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { GetAllPostsQuery } from '../../gql/graphql';
+
 import PostCard from './PostCard';
 
 interface Props {
   data: GetAllPostsQuery;
 }
 
-const PostList: React.FC<Props> = ({ data }) => {
+const PostList: React.FC<Props> = ({ data }: Props) => {
   return (
     <View style={styles.container}>
       <FlatList

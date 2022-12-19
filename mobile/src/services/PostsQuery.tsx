@@ -7,6 +7,7 @@ query getAllPosts {
     title
     user
     desc
+    createdAt
   }
 }
 `);

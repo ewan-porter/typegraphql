@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from '../screens/HomeScreen';
+
 import { useTheme } from 'native-base';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LogInStack from './LogInStack';
@@ -8,13 +8,16 @@ import CreatePost from '../screens/CreatePost';
 import Account from '../screens/Account';
 import { RootTabParamList } from '../types';
 import { useUserContext } from '../AppContext';
+import PostsStack from './PostsStack';
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 const INITIAL_ROUTE_NAME = 'Home';
 const BottomTabNavigator: React.FC = () => {
-  const { activeUser } = useUserContext();
+  const { activeUser, signOut } = useUserContext();
   const { colors } = useTheme();
   const signedIn = activeUser;
+
+  signOut();
 
   return (
     <BottomTab.Navigator
@@ -37,9 +40,10 @@ const BottomTabNavigator: React.FC = () => {
         }}>
         <BottomTab.Screen
           name="Home"
-          component={HomeScreen}
+          component={PostsStack}
           options={{
             title: 'Home',
+            headerShown: false,
             tabBarIcon: ({ color, size }) => (
               <Icon name="home" color={color} size={size} />
             ),

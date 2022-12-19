@@ -4,7 +4,7 @@ import Loader from '../components/Loader';
 import PostList from '../components/posts/PostList';
 import { Text } from 'native-base';
 
-const HomeScreen: React.FC = () => {
+const HomeScreen = () => {
   const { loading, error, data } = useGetAllPostsQuery();
 
   if (loading) {

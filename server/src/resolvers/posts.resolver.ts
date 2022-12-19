@@ -1,13 +1,28 @@
-import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import { CommentModel } from './../schema/schemaProcess';
+import { Comment } from './../schema/comment.schema';
+import {
+  Arg,
+  Authorized,
+  Ctx,
+  FieldResolver,
+  Mutation,
+  Query,
+  Resolver,
+  ResolverInterface,
+  Root,
+} from 'type-graphql';
 import PostsService from '../service/posts.service';
 import { Post, CreatePostInput } from '../schema/posts.schema';
-import { User } from '../schema/user.schema';
 import Context from '../types/context';
 import { PostModel } from '../schema/schemaProcess';
+import CommentService from '../service/comment.service';
 
-@Resolver()
+@Resolver(() => Post)
 export default class PostsResolver {
-  constructor(private postsService: PostsService) {
+  constructor(
+    private postsService: PostsService,
+    private readonly commentService: CommentService,
+  ) {
     this.postsService = new PostsService();
   }
 
@@ -39,5 +54,15 @@ export default class PostsResolver {
   @Query(() => [Post])
   async getAllPosts(): Promise<Post[]> {
     return await PostModel.find();
+  }
+  @FieldResolver(() => [Comment])
+  async comments(@Root() post: any): Promise<Comment[]> {
+    console.log(typeof post);
+
+    const commentPost = post._doc as Post;
+    const postId = commentPost._id;
+    const postComments = await CommentModel.find({ post: postId });
+
+    return postComments;
   }
 }
