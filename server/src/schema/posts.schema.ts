@@ -27,9 +27,6 @@ export class Post {
   @Field(() => String)
   _id: string;
 
-  @Field(() => ID)
-  postId: string;
-
   @Field(() => String)
   @prop({ required: true })
   title: string;

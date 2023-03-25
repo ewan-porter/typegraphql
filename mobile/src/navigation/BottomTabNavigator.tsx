@@ -17,8 +17,6 @@ const BottomTabNavigator: React.FC = () => {
   const { colors } = useTheme();
   const signedIn = activeUser;
 
-  signOut();
-
   return (
     <BottomTab.Navigator
       sceneContainerStyle={{

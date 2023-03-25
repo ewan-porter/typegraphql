@@ -8,6 +8,14 @@ query getAllPosts {
     user
     desc
     createdAt
+    comments {
+      _id
+      user
+      comment
+      createdAt
+      post
+    }
+
   }
 }
 `);
@@ -36,6 +44,30 @@ mutation createUser($input: CreateUserInput!) {
       fname
       lname
     }
+  }
+}
+`);
+
+export const POST_COMMENTS = gql(`
+query getPostComments($postId: String!) {
+  getPostComments(postId: $postId) {
+    _id
+    user
+    comment
+    createdAt
+    post
+  }
+}
+`);
+
+export const POST_SUBMIT_COMMENT = gql(`
+mutation createComment($input: CreateCommentInput!) {
+  createComment(input: $input) {
+    _id
+    user
+    comment
+    createdAt
+    post
   }
 }
 `);

@@ -8,7 +8,6 @@ import {
   Mutation,
   Query,
   Resolver,
-  ResolverInterface,
   Root,
 } from 'type-graphql';
 import PostsService from '../service/posts.service';
@@ -56,13 +55,15 @@ export default class PostsResolver {
     return await PostModel.find();
   }
   @FieldResolver(() => [Comment])
-  async comments(@Root() post: any): Promise<Comment[]> {
-    console.log(typeof post);
-
-    const commentPost = post._doc as Post;
-    const postId = commentPost._id;
+  async comments(@Root() { _doc }: PostDocument): Promise<Comment[]> {
+    const post = _doc;
+    const postId = post._id;
     const postComments = await CommentModel.find({ post: postId });
 
     return postComments;
   }
 }
+
+type PostDocument = {
+  _doc: Post;
+};

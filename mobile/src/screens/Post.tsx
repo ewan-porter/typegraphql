@@ -2,6 +2,8 @@ import { RouteProp, useRoute } from '@react-navigation/native';
 import { Center, Box, useTheme } from 'native-base';
 
 import React from 'react';
+import CommentForm from '../components/comment/CommentForm';
+import CommentSection from '../components/comment/CommentSection';
 
 import { PostStackParamList } from '../types';
 
@@ -9,7 +11,7 @@ type PostProps = RouteProp<PostStackParamList, 'Post'>;
 const Post = () => {
   const route = useRoute<PostProps>();
   const { colors } = useTheme();
-  const data = route.params?.post;
+  const data = route.params!.post;
 
   return (
     <Center>
@@ -47,6 +49,9 @@ const Post = () => {
           {data?.user}
         </Box>
       </Box>
+
+      <CommentForm post={data._id} />
+      <CommentSection post={data._id} />
     </Center>
   );
 };

@@ -24,7 +24,7 @@ class UserService {
       throw new ApolloError('Username already in use');
     }
 
-    const user = UserModel.create(input);
+    const user = (await UserModel.create(input)).toJSON();
 
     const token = signJwt(user);
 

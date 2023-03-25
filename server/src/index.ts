@@ -28,6 +28,7 @@ async function bootstrap() {
 
   const server = new ApolloServer({
     schema,
+
     context: (ctx: Context) => {
       const context = ctx;
 

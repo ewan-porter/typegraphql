@@ -6,6 +6,7 @@ import { Text } from 'native-base';
 
 const HomeScreen = () => {
   const { loading, error, data } = useGetAllPostsQuery();
+  console.log(data?.getAllPosts);
 
   if (loading) {
     return <Loader />;
@@ -14,7 +15,7 @@ const HomeScreen = () => {
     return <Text>{error.message}</Text>;
   }
   if (!data) {
-    return <Text>THere are no posts :\(</Text>;
+    return <Text>There are no posts :\</Text>;
   }
   return <PostList data={data} />;
 };
